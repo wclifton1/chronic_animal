@@ -19,13 +19,13 @@ void setup() {
   // were the serial ports that my microcontrollers were 
   // attached to.
   // Open whatever ports ares the ones you're using.
-
-  // get the ports' names:
-  String portOne = Serial.list()[6];
-  // String portTwo = Serial.list()[2];
-  // open the ports:
-  myPorts[0] = new Serial(this, portOne, 9600);
-  //myPorts[1] = new Serial(this, portTwo, 9600);
+  myPorts[0] = new Serial(this, Serial.list()[6], 9600);
+  //myPorts[1] = new Serial(this, Serial.list()[2], 9600);
+   myPorts[0].clear();
+  // Throw out the first reading, in case we started reading 
+  // in the middle of a string from the sender.
+  dataIn[0] = myPorts[0].readStringUntil(lf);
+  dataIn[0] = null;
 }
 
 
@@ -58,7 +58,8 @@ void serialEvent(Serial thisPort) {
     }
   }
   // read from the port:
-  while (thisPort.read () > 0) {
+  while (thisPort.available () > 0) {
+    println("starting to read");
     //thisPort.bufferUntil(lf);
     dataIn[portNumber] = thisPort.readStringUntil(lf);   
     if (dataIn[portNumber] != null) {
