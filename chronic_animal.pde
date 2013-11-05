@@ -8,20 +8,21 @@
 import processing.serial.*;
 
 Serial[] myPorts = new Serial[2];  // Create a list of objects from Serial class
-String[] dataIn = new String[2];         // a list to hold data from the serial ports
+String[] dataIn = new String[40];         // a list to hold data from the serial ports
 int lf = 10;
+int EOF = 41;
+int[] rpm = new int[2];
+int[] i = new int[2];
+int[] v = new int[2];
 
 void setup() {
   size(400, 300);
   // print a list of the serial ports:
   println(Serial.list());
-  // On my machine, the first and third ports in the list
-  // were the serial ports that my microcontrollers were 
-  // attached to.
   // Open whatever ports ares the ones you're using.
-  myPorts[0] = new Serial(this, Serial.list()[6], 9600);
-  //myPorts[1] = new Serial(this, Serial.list()[2], 9600);
-   myPorts[0].clear();
+  myPorts[0] = new Serial(this, Serial.list()[0], 9600);
+  //myPorts[1] = new Serial(this, Serial.list()[1], 9600);
+  myPorts[0].clear();
   // Throw out the first reading, in case we started reading 
   // in the middle of a string from the sender.
   dataIn[0] = myPorts[0].readStringUntil(lf);
@@ -58,38 +59,29 @@ void serialEvent(Serial thisPort) {
     }
   }
   // read from the port:
+
   while (thisPort.available () > 0) {
-    println("starting to read");
+    //println("starting to read");
     //thisPort.bufferUntil(lf);
-    dataIn[portNumber] = thisPort.readStringUntil(lf);   
+   
+    dataIn[portNumber] = thisPort.readStringUntil(')');  
+     println("3"); 
     if (dataIn[portNumber] != null) {
+       println("4");
       println("Got " + dataIn[portNumber] + " from serial port " + portNumber);
+       println("44");
     }
+     println("45");
+    int[] vals = int(splitTokens(dataIn[portNumber], ",*")); 
+    println("5");
+    rpm[portNumber]=vals[1];
+    i[portNumber]=vals[2];
+    v[portNumber]=vals[3];
   }
   // put it in the list that holds the latest data from each port:
   // tell us who sent what:
 }
 
-/*
-The following Wiring/Arduino code runs on both microcontrollers that
- were used to send data to this sketch:
- 
- void setup()
- {
- // start serial port at 9600 bps:
- Serial.begin(9600);
- }
- 
- void loop() {
- // read analog input, divide by 4 to make the range 0-255:
- int analogValue = analogRead(0)/4; 
- Serial.write(analogValue);
- // pause for 10 milliseconds:
- delay(10);                 
- }
- 
- 
- */
 //select motor -> torque calc
 //define set speed or calculate trend
 //display torques
