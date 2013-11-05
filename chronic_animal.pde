@@ -14,6 +14,7 @@ int EOF = 41;
 int rpm;
 int i;
 int v;
+int[] vals = new int[5];
 
 void setup() {
   size(400, 300);
@@ -55,30 +56,28 @@ void serialEvent(Serial thisPort) {
   // one that generated this event:
   /*
   for (int p = 0; p < myPorts.length; p++) {
-    if (thisPort == myPorts[p]) {
-      portNumber = p;
-    }
-  }
-  */
+   if (thisPort == myPorts[p]) {
+   portNumber = p;
+   }
+   }
+   */
   // read from the port:
 
   while (myPorts.available () > 0) {
     //println("starting to read");
     //thisPort.bufferUntil(lf);
-   
-    dataIn = thisPort.readStringUntil(')');  
-     println("3"); 
+
+    dataIn = myPorts.readStringUntil(')');  
     if (dataIn != null) {
-       println("4");
+      println("4");
       println("Got " + dataIn + " from serial port " + portNumber);
-       println("44");
+      println("44");
+      vals = int(splitTokens(dataIn, ",*"));
+      println("5");
+      rpm=vals[1];
+      i=vals[2];
+      v=vals[3];
     }
-     println("45");
-    int[] vals = int(splitTokens(dataIn, ",*")); 
-    println("5");
-    rpm=vals[1];
-    i=vals[2];
-    v=vals[3];
   }
   // put it in the list that holds the latest data from each port:
   // tell us who sent what:
