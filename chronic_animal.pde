@@ -7,26 +7,26 @@
 
 import processing.serial.*;
 
-Serial[] myPorts = new Serial[2];  // Create a list of objects from Serial class
-String[] dataIn = new String[40];         // a list to hold data from the serial ports
+Serial myPorts;  // Create a list of objects from Serial class
+String dataIn;         // a list to hold data from the serial ports
 int lf = 10;
 int EOF = 41;
-int[] rpm = new int[2];
-int[] i = new int[2];
-int[] v = new int[2];
+int rpm;
+int i;
+int v;
 
 void setup() {
   size(400, 300);
   // print a list of the serial ports:
   println(Serial.list());
   // Open whatever ports ares the ones you're using.
-  myPorts[0] = new Serial(this, Serial.list()[0], 9600);
+  myPorts = new Serial(this, Serial.list()[0], 9600);
   //myPorts[1] = new Serial(this, Serial.list()[1], 9600);
-  myPorts[0].clear();
+  myPorts.clear();
   // Throw out the first reading, in case we started reading 
   // in the middle of a string from the sender.
-  dataIn[0] = myPorts[0].readStringUntil(lf);
-  dataIn[0] = null;
+  dataIn = myPorts.readStringUntil(lf);
+  dataIn = null;
 }
 
 
@@ -53,30 +53,32 @@ void serialEvent(Serial thisPort) {
 
   // iterate over the list of ports opened, and match the 
   // one that generated this event:
+  /*
   for (int p = 0; p < myPorts.length; p++) {
     if (thisPort == myPorts[p]) {
       portNumber = p;
     }
   }
+  */
   // read from the port:
 
-  while (thisPort.available () > 0) {
+  while (myPorts.available () > 0) {
     //println("starting to read");
     //thisPort.bufferUntil(lf);
    
-    dataIn[portNumber] = thisPort.readStringUntil(')');  
+    dataIn = thisPort.readStringUntil(')');  
      println("3"); 
-    if (dataIn[portNumber] != null) {
+    if (dataIn != null) {
        println("4");
-      println("Got " + dataIn[portNumber] + " from serial port " + portNumber);
+      println("Got " + dataIn + " from serial port " + portNumber);
        println("44");
     }
      println("45");
-    int[] vals = int(splitTokens(dataIn[portNumber], ",*")); 
+    int[] vals = int(splitTokens(dataIn, ",*")); 
     println("5");
-    rpm[portNumber]=vals[1];
-    i[portNumber]=vals[2];
-    v[portNumber]=vals[3];
+    rpm=vals[1];
+    i=vals[2];
+    v=vals[3];
   }
   // put it in the list that holds the latest data from each port:
   // tell us who sent what:
