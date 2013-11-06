@@ -24,12 +24,12 @@ void draw() {
   while (myPort.available () > 0) {
     myString = myPort.readStringUntil(lf);
     if (myString != null) {
-      println(myString);
+     // println(myString);
       // The data is split into an array of Strings with a comma or asterisk as a delimiter and converted into an array of integers.
       int[] vals = int(splitTokens(myString, ",*")); 
 
       // Fill r,g,b variables
-      if (vals.length == 4) {
+      if (vals.length == 5) {
         r = vals[1];
         g = vals[2];
         b = vals[3];
