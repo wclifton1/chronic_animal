@@ -6,7 +6,8 @@ int lf = 10;    // Linefeed in ASCII
 String myString = null;
 Serial myPort;  // The serial port
 
-int r, g, b;    // Used to color background
+int rpm;
+float i, v;    // Used to color background
 
 void setup() {
   // List all the available serial ports
@@ -30,10 +31,10 @@ void draw() {
 
       // Fill r,g,b variables
       if (vals.length == 5) {
-        r = vals[1];
-        g = vals[2];
-        b = vals[3];
-        println("RPM = "+r+" Current = "+g+" Volts = "+b);
+        rpm = vals[1];
+        i = vals[2]/1000.0;
+        v = vals[3]/100.0;
+        println("RPM = "+rpm+" Current = "+i+" Volts = "+v);
       }
     }
   }
