@@ -60,12 +60,13 @@ void draw() {
       int[] vals = int(splitTokens(myString, ",*")); 
 
       // Fill variables
+      //println(myString);
       if (vals.length == 6) {
         rpm = vals[1];
         i = vals[2]/1000.0;
         v = vals[3]/1000.0;
         p = vals[4]/1000.0;
-        println("RPM = "+rpm+" Current = "+i+" Volts = "+v+" Power = "+p);
+        println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+" RPM = "+rpm+" Current = "+i+" Volts = "+v+" Power = "+p);
         if (v < critV || rpm < rpmCutoff) {
           setGradient(0, 0, width, height, b1, stop, Y_AXIS);
         }
@@ -78,6 +79,7 @@ void draw() {
         }
         image(line, 50, 60);
         image(logo, 120, 30);
+        textSize(48);
         text(rHead, 80, 300);
         text(nfc(int(rpm/1000)*1000), 250, 300);
         text("RPM", 450, 300);
@@ -90,6 +92,8 @@ void draw() {
         text(pHead, 80, 600);
         text(String.format("%.2f",p), 250, 600);
         text("W", 450, 600);
+        textSize(26);
+        text("Last Update: "+month()+"/"+day()+"/"+year()+" "+hour()+":"+minute()+":"+second()
         output.println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+","+rpm+","+i+","+v+","+p);
       }
     }
