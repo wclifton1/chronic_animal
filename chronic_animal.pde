@@ -2,26 +2,28 @@
 
 import processing.serial.*;
 
-//CONSTANTS
-int serialChoice = 11;
-float critV = 13.2;
-float lowV = 13.6;
-int rpmCutoff = 6000;
-
 int Y_AXIS = 1;
 int X_AXIS = 2;
 color b1, b2, warning, stop;
 PImage logo;
 PImage line;
 PFont font;
+<<<<<<< HEAD
 String rHead="Speed ";
 String vHead="Battery ";
 String iHead="Current ";
 String pHead="Power ";
+=======
+String rHead="RPM ";
+String bHead="Battery ";
+String tHead="Torque ";
+float critV = 13.2;
+float lowV = 13.6;
+int rpmCutoff = 6000;
+>>>>>>> parent of 7a1f07a... ready for animal
 float v = 0.0;
 int rpm = 0;
 float i = 0.0;
-float p = 0.0;
 PrintWriter output;
 
 int lf = 10;    // Linefeed in ASCII
@@ -40,10 +42,11 @@ void setup() {
   logo = loadImage("logo.png"); // Load the original image
   line = loadImage("line.png"); // Load the original image
   output = createWriter(month()+"-"+day()+" "+hour()+"-"+minute()+"-"+second()+" chronic.txt");
+
   // List all the available serial ports
   println(Serial.list());
   // Open the port you are using at the rate you want:
-  myPort = new Serial(this, Serial.list()[serialChoice], 9600);
+  myPort = new Serial(this, Serial.list()[10], 9600);
   myPort.clear();
   // Throw out the first reading, in case we started reading 
   // in the middle of a string from the sender.
@@ -60,6 +63,7 @@ void draw() {
       int[] vals = int(splitTokens(myString, ",*")); 
 
       // Fill variables
+<<<<<<< HEAD
       //println(myString);
       if (vals.length == 6) {
         rpm = vals[1];
@@ -74,9 +78,23 @@ void draw() {
           text("Change Battery Now",575,500);
         }
         else if (v < lowV) {
+=======
+      if (vals.length == 5) {
+        rpm = vals[1];
+        i = vals[2]/1000.0;
+        v = vals[3]/1000.0;
+        println("RPM = "+rpm+" Current = "+i+" Volts = "+v);
+        if (v < lowV) {
+>>>>>>> parent of 7a1f07a... ready for animal
           setGradient(0, 0, width, height, b1, warning, Y_AXIS);
           text("Low Battery",575,500);
         }
+<<<<<<< HEAD
+=======
+        else if (v < critV || rpm < rpmCutoff) {
+          setGradient(0, 0, width, height, b1, stop, Y_AXIS);
+        }
+>>>>>>> parent of 7a1f07a... ready for animal
         else {
           setGradient(0, 0, width, height, b1, b2, Y_AXIS);
         }
@@ -89,6 +107,7 @@ void draw() {
         textSize(48);
         textAlign(LEFT);
         text(rHead, 80, 300);
+<<<<<<< HEAD
         text(nfc(int(rpm/1000)*1000), 250, 300);
         text("RPM", 450, 300);
         text(iHead, 80, 400);
@@ -104,6 +123,14 @@ void draw() {
         textAlign(RIGHT);
         text("Last Update: "+month()+"/"+day()+"/"+year()+" "+hour()+":"+minute()+":"+second(),1075,625);
         output.println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+","+rpm+","+i+","+v+","+p);
+=======
+        text(rpm, 250, 300);
+        text(tHead, 80, 450);
+        text(i, 250, 450);
+        text(bHead, 80, 600);
+        text(v, 250, 600);
+        output.println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+","+rpm+","+i+","+v);
+>>>>>>> parent of 7a1f07a... ready for animal
       }
     }
   }
@@ -129,10 +156,5 @@ void setGradient(int x, int y, float w, float h, color c1, color c2, int axis ) 
       line(i, y, i, y+h);
     }
   }
-}
-
-void keyPressed() {
-  myPort.write(key);
-  myPort.write(10);
 }
 
