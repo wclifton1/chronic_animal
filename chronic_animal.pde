@@ -68,7 +68,7 @@ void draw() {
         p = vals[4]/1000.0;
         textSize(48);
         textAlign(LEFT);
-        println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+" RPM = "+rpm+" Current = "+i+" Volts = "+v+" Power = "+p);
+        println(nf(month(),2)+"/"+nf(day(),2)+" "+hour()+":"+nf(minute(),2)+":"+nf(second(),2)+" RPM = "+rpm+" Current = "+i+" Volts = "+v+" Power = "+p);
         if (v < critV) {
           setGradient(0, 0, width, height, b1, stop, Y_AXIS);
           text("Change Battery Now", 575, 500);
@@ -89,21 +89,21 @@ void draw() {
         textSize(48);
         textAlign(LEFT);
         text(rHead, 80, 300);
-        text(nfc(int(rpm/1000)*1000), 250, 300);
         text("RPM", 450, 300);
         text(iHead, 80, 400);
-        text(String.format("%.2f", i), 250, 400);
         text("A", 450, 400);
         text(vHead, 80, 500);
-        text(String.format("%.2f", v), 250, 500);
         text("V", 450, 500);
         text(pHead, 80, 600);
-        text(String.format("%.2f", p), 250, 600);
         text("W", 450, 600);
-        textSize(26);
         textAlign(RIGHT);
-        text("Last Update: "+month()+"/"+day()+"/"+year()+" "+hour()+":"+minute()+":"+second(), 1075, 625);
-        output.println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+","+rpm+","+i+","+v+","+p);
+        text(nfc(int(rpm/1000)*1000), 425, 300);
+        text(String.format("%.2f", i),425, 400);
+        text(String.format("%.2f", v), 425, 500);
+        text(String.format("%.2f", p), 425, 600);
+        textSize(26);
+        text("Last Update: "+nf(month(),2)+"/"+nf(day(),2)+"/"+nf(year(),2)+" "+hour()+":"+nf(minute(),2)+":"+nf(second(),2), 1075, 625);
+        output.println(nf(month(),2)+"/"+nf(day(),2)+","+hour()+":"+nf(minute(),2)+":"+nf(second(),2)+","+rpm+","+i+","+v+","+p);
     output.flush();  
     }
     }
