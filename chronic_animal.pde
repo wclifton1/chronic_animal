@@ -11,8 +11,9 @@ PFont font;
 String rHead="RPM ";
 String bHead="Battery ";
 String tHead="Torque ";
-float critV = 12.5;
-float lowV = 14.5;
+float critV = 13.2;
+float lowV = 13.6;
+int rpmCutoff = 6000;
 float v = 0.0;
 int rpm = 0;
 float i = 0.0;
@@ -38,7 +39,7 @@ void setup() {
   // List all the available serial ports
   println(Serial.list());
   // Open the port you are using at the rate you want:
-  myPort = new Serial(this, Serial.list()[0], 9600);
+  myPort = new Serial(this, Serial.list()[10], 9600);
   myPort.clear();
   // Throw out the first reading, in case we started reading 
   // in the middle of a string from the sender.
@@ -63,7 +64,7 @@ void draw() {
         if (v < lowV) {
           setGradient(0, 0, width, height, b1, warning, Y_AXIS);
         }
-        else if (v < critV || rpm < 10000) {
+        else if (v < critV || rpm < rpmCutoff) {
           setGradient(0, 0, width, height, b1, stop, Y_AXIS);
         }
         else {
@@ -74,10 +75,10 @@ void draw() {
         text(rHead, 80, 300);
         text(rpm, 250, 300);
         text(tHead, 80, 450);
-        text(t, 250, 450);
+        text(i, 250, 450);
         text(bHead, 80, 600);
         text(v, 250, 600);
-        output.println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+","+rpm+","+t+","+v);
+        output.println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+","+rpm+","+i+","+v);
       }
     }
   }
