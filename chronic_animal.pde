@@ -66,17 +66,23 @@ void draw() {
         i = vals[2]/1000.0;
         v = vals[3]/1000.0;
         p = vals[4]/1000.0;
+        textSize(48);
+        textAlign(LEFT);
         println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+" RPM = "+rpm+" Current = "+i+" Volts = "+v+" Power = "+p);
-        if (v < critV || rpm < rpmCutoff) {
+        if (v < critV) {
           setGradient(0, 0, width, height, b1, stop, Y_AXIS);
-          text("Change Battery Now",550,500);
+          text("Change Battery Now",575,500);
         }
         else if (v < lowV) {
           setGradient(0, 0, width, height, b1, warning, Y_AXIS);
-          text("Low Battery",550,500);
+          text("Low Battery",575,500);
         }
         else {
           setGradient(0, 0, width, height, b1, b2, Y_AXIS);
+        }
+        if (rpm < rpmCutoff) {
+          setGradient(0, 0, width, height, b1, stop, Y_AXIS);
+          text("Pump Fail",575,300);
         }
         image(line, 50, 60);
         image(logo, 120, 30);
