@@ -69,17 +69,19 @@ void draw() {
         println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+" RPM = "+rpm+" Current = "+i+" Volts = "+v+" Power = "+p);
         if (v < critV || rpm < rpmCutoff) {
           setGradient(0, 0, width, height, b1, stop, Y_AXIS);
+          text("Change Battery Now",550,500);
         }
         else if (v < lowV) {
           setGradient(0, 0, width, height, b1, warning, Y_AXIS);
+          text("Low Battery",550,500);
         }
-
         else {
           setGradient(0, 0, width, height, b1, b2, Y_AXIS);
         }
         image(line, 50, 60);
         image(logo, 120, 30);
         textSize(48);
+        textAlign(LEFT);
         text(rHead, 80, 300);
         text(nfc(int(rpm/1000)*1000), 250, 300);
         text("RPM", 450, 300);
@@ -93,7 +95,8 @@ void draw() {
         text(String.format("%.2f",p), 250, 600);
         text("W", 450, 600);
         textSize(26);
-        text("Last Update: "+month()+"/"+day()+"/"+year()+" "+hour()+":"+minute()+":"+second()
+        textAlign(RIGHT);
+        text("Last Update: "+month()+"/"+day()+"/"+year()+" "+hour()+":"+minute()+":"+second(),1075,625);
         output.println(month()+"/"+day()+","+hour()+":"+minute()+":"+second()+","+rpm+","+i+","+v+","+p);
       }
     }
